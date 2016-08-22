@@ -10,16 +10,22 @@ Just playing around with CS:GO hacking.
 
 1. Create virtualenv & activate it:
 
+    ```
     virtualenv2 .env
     . .env/bin/activate
+    ```
 
 2. Install requirements:
 
+    ```
     pip install -r requirements.txt
+    ```
 
 3. Run it with root:
 
+    ```
     sudo ./app.py
+    ```
 
 ## Credits
 
