@@ -33,6 +33,6 @@ Thanks to guys at http://unknowncheats.me/ for their sources:
 
 - Cre3per
 - s0beit
-- Atex for
+- Atex
 
 My work was mostly collecting info & porting things to Python.
