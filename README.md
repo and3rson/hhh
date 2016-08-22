@@ -29,6 +29,10 @@ Just playing around with CS:GO hacking.
 
 ## Credits
 
-Thank you for guys at http://unknowncheats.me/, especially to Cre3per, s0beit and Atex for their sources.
+Thanks to guys at http://unknowncheats.me/ for their sources:
+
+- Cre3per
+- s0beit
+- Atex for
 
 My work was mostly collecting info & porting things to Python.
