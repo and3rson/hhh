@@ -4,7 +4,7 @@ import sys
 import time
 from memory import Memory, LocalPlayerStruct
 from helpers import dump, pidof, recast
-from gui import Gui
+# from gui import Gui
 from hotkeys import HotkeyListener
 from cs import CSGO
 from notifications import notify
@@ -59,10 +59,11 @@ class App(object):
             time.sleep(0.2)
 
 
-part = sys.argv[1]
+# part = sys.argv[1]
+part = 'csgo_linux64'
 pid, app, args = pidof(part)
 if not pid:
-    raise Exception('Process containing "{}" not found.'.format(part))
+    raise Exception('Process with name "{}" not found.'.format(part))
     sys.exit(1)
 print 'Found PID:            ', pid
 print 'Process executable:   ', app

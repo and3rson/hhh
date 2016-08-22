@@ -1,0 +1,5 @@
+dbus-python==1.2.4
+python-ptrace==0.9
+python-xlib==0.17
+PyUserInput==0.1.10
+six==1.10.0
