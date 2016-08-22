@@ -21,9 +21,11 @@ Just playing around with CS:GO hacking.
     pip install -r requirements.txt
     ```
 
-3. Run it with root:
+3. Run it (should work without root):
 
     ```
+    ./app.py
+    # Try with sudo if it crashes
     sudo ./app.py
     ```
 

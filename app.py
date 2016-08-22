@@ -25,16 +25,16 @@ class App(object):
                 self.flash_hack = not self.flash_hack
                 if not local_player.set_value('flash_alpha', 70.0 if self.flash_hack else 255.0):
                     self.flash_hack = not self.flash_hack
-                    notify('steam', 'HHH', 'Failed to toggle flash_hack! Memory is busy.')
+                    notify('steam', 'HHH', 'Failed to toggle flash_hack! Memory is busy.', timeout=5)
                 else:
-                    notify('steam', 'HHH', 'flash_hack toggled to {}'.format(self.flash_hack))
+                    notify('steam', 'HHH', 'flash_hack {}'.format('ENABLED' if self.flash_hack else 'DISABLED'), timeout=1)
             else:
-                notify('steam', 'HHH', 'Failed to reset flash_hask: LocalPlayer does not exist yet.')
+                notify('steam', 'HHH', 'Failed to reset flash_hask: LocalPlayer does not exist yet.', timeout=5)
         else:
-                notify('steam', 'HHH', 'Failed to reset flash_hask: hack not ready yet.')
+                notify('steam', 'HHH', 'Failed to reset flash_hask: hack not ready yet.', timeout=5)
 
     def run(self):
-        notify('steam', 'HHH', 'HHH is starting')
+        notify('steam', 'HHH', 'HHH is starting', timeout=3)
 
         self.hl.register(78, self._reset_flashbang)
         self.hl.start()
@@ -53,7 +53,7 @@ class App(object):
 
         self.ready = True
 
-        notify('steam', 'HHH', 'HHH is ready')
+        notify('steam', 'HHH', 'HHH is ready', timeout=5)
 
         while True:
             time.sleep(0.2)
