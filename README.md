@@ -8,26 +8,8 @@ Just playing around with CS:GO hacking.
 
 ## How to run?
 
-1. Create virtualenv & activate it:
-
-    ```
-    virtualenv2 .env
-    . .env/bin/activate
-    ```
-
-2. Install requirements:
-
-    ```
-    pip install -r requirements.txt
-    ```
-
-3. Run it (should work without root):
-
-    ```
-    ./app.py
-    # Try with sudo if it crashes
-    sudo ./app.py
-    ```
+1. Install `python 2.7`, `pip` and `virtualenv2`.
+2. Run `make`.
 
 ## Credits
 
