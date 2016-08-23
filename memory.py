@@ -92,6 +92,9 @@ class MemoryBlock(object):
     def read_float(self, offset):
         return struct.unpack('<f', self.read(offset, 4))[0]
 
+    def read_uint8(self, offset):
+        return ord(self.read(offset, 1))
+
     def read_int32(self, offset):
         return struct.unpack('<l', self.read(offset, 4))[0]
 
@@ -124,6 +127,9 @@ class MemoryBlock(object):
 
     def write_float(self, offset, value):
         return self.memory._write(self.to_abs(offset), struct.pack('<f', value))
+
+    def write_uint8(self, offset, value):
+        return self.memory._write(self.to_abs(offset), chr(value))
 
     def write_uint32(self, offset, value):
         return self.memory._write(self.to_abs(offset), struct.pack('<L', value))
@@ -166,56 +172,3 @@ class MemoryBlock(object):
 
     def get_call_address(self, address):
         return address + self.read_uint32(address + 1) + 5
-
-
-class Struct(object):
-    """docstring for Struct"""
-    def __init__(self, memory, arg):
-        super(Struct, self).__init__()
-        self.memory = memory
-        self.abs_block = memory.get_abs_block()
-        if isinstance(arg, (list, tuple)):
-            block, offset = arg
-            self.offset = block.to_abs(offset)
-        else:
-            self.offset = arg
-
-    def get_size_and_offset(self, key):
-        offset = self.offset
-        for def_key, def_type, def_size in self.get_definition():
-            if key == def_key:
-                return (def_type, offset, def_size)
-            offset += def_size
-        raise Exception('Key "{}" not found in struct!'.format(key))
-
-    def get_definition(self):
-        raise NotImplementedError()
-
-    def get_value(self, key):
-        def_type, offset, size = self.get_size_and_offset(key)
-        reader_attr = 'read_{}'.format(def_type)
-        if hasattr(self.abs_block, reader_attr):
-            return getattr(self.abs_block, reader_attr)(offset)
-        else:
-            return self.abs_block.read(offset, size)
-
-    def set_value(self, key, value):
-        def_type, offset, size = self.get_size_and_offset(key)
-        writer_attr = 'write_{}'.format(def_type)
-        if hasattr(self.abs_block, writer_attr):
-            return getattr(self.abs_block, writer_attr)(offset, value)
-        else:
-            return self.abs_block.write(offset, value)
-
-
-class LocalPlayerStruct(Struct):
-    def __init__(self, memory, arg):
-        super(LocalPlayerStruct, self).__init__(memory, arg)
-
-    def get_definition(self):
-        return (
-            ('?', 'array', 0x120),
-            ('team_number', 'uint32', 4),
-            ('?', 'array', 0xAAC0),
-            ('flash_alpha', 'float', 4)
-        )

@@ -2,7 +2,7 @@
 
 import sys
 import time
-from memory import Memory, LocalPlayerStruct
+from memory import Memory
 from helpers import dump, pidof, recast
 # from gui import Gui
 from hotkeys import HotkeyListener
@@ -18,18 +18,14 @@ class App(object):
         self.flash_hack = False
 
     def _reset_flashbang(self):
-        if self.ready:
-            local_player_a_abs = self.cs.get_local_player_a_abs()
-            if local_player_a_abs:
-                local_player = LocalPlayerStruct(self.memory, local_player_a_abs)
+        if self.cs.is_ready:
+            local_player = self.cs.get_local_player()
+            self.flash_hack = not self.flash_hack
+            if not local_player.set_value('flash_alpha', 70.0 if self.flash_hack else 255.0):
                 self.flash_hack = not self.flash_hack
-                if not local_player.set_value('flash_alpha', 70.0 if self.flash_hack else 255.0):
-                    self.flash_hack = not self.flash_hack
-                    notify('steam', 'HHH', 'Failed to toggle flash_hack! Memory is busy.', timeout=5)
-                else:
-                    notify('steam', 'HHH', 'flash_hack {}'.format('ENABLED' if self.flash_hack else 'DISABLED'), timeout=1)
+                notify('steam', 'HHH', 'Failed to toggle flash_hack! Memory is busy.', timeout=5)
             else:
-                notify('steam', 'HHH', 'Failed to reset flash_hask: LocalPlayer does not exist yet.', timeout=5)
+                notify('steam', 'HHH', 'flash_hack {}'.format('ENABLED' if self.flash_hack else 'DISABLED'), timeout=1)
         else:
                 notify('steam', 'HHH', 'Failed to reset flash_hask: hack not ready yet.', timeout=5)
 
@@ -43,15 +39,21 @@ class App(object):
 
         self.cs = CSGO(self.memory)
 
-        self.client_dll = self.memory.find_block('client_client.so')
-        if not self.client_dll:
-            raise Exception('client_client.so not found!')
+        arr = self.cs.get_glow_array()
+        # print len(arr)
+        for entity in arr:
+            print entity.dump()
+            # print entity.get_value('is_dormant'), entity.get_value('health'), entity.get_value('team_num')
 
-        self.abs_block = self.memory.get_abs_block()
+        # self.client_dll = self.memory.find_block('client_client.so')
+        # if not self.client_dll:
+        #     raise Exception('client_client.so not found!')
 
-        print 'Client DLL:', self.client_dll
+        # self.abs_block = self.memory.get_abs_block()
 
-        self.ready = True
+        # print 'Client DLL:', self.client_dll
+
+        # self.ready = True
 
         notify('steam', 'HHH', 'HHH is ready', timeout=5)
 
